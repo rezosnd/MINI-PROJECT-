@@ -1,4 +1,4 @@
-# 🌍 DARK ROUTE - IoT Weather Monitoring & Risk Prediction System
+# IoT Weather Monitoring & Risk Prediction System
 
 ![Expo](https://img.shields.io/badge/Expo-SDK%2054-black)
 ![React Native](https://img.shields.io/badge/React%20Native-0.81-20232A)
@@ -799,5 +799,4 @@ All module components including APP, BACKEND-BOT, and ML BACKEND are integrated 
 
 **Platform Status**: 🟢 Active Development  
 **Last Updated**: March 2026  
-**Architecture Version**: 1.0  
-**Maintained By**: DARK ROUTE Development Team
+**Architecture Version**: 1.0
