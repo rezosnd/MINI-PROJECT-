@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .uv-hero {
+        background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(251,146,60,0.04));
+        border: 1px solid rgba(245,158,11,0.18);
+        border-radius: 16px;
+    }
+    .uv-gauge-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 14; stroke-linecap: round; }
+    .uv-gauge-fill  { fill: none; stroke-width: 14; stroke-linecap: round; transition: stroke-dasharray 1s ease, stroke 0.8s ease; }
+    .uv-scale-bar {
+        height: 12px; border-radius: 999px;
+        background: linear-gradient(90deg,#10b981 0%,#22c55e 18%,#eab308 36%,#f97316 54%,#ef4444 72%,#a855f7 90%);
+        position: relative; overflow: visible;
+    }
+    .uv-scale-marker {
+        position: absolute; top: -4px; width: 4px; height: 20px;
+        background: white; border-radius: 2px;
+        box-shadow: 0 0 8px rgba(255,255,255,0.8);
+        transition: left 1s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .advice-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 5px 12px; border-radius: 999px;
+        font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.05); color: #e2e8f0;
+    }
+    .stat-chip {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px; padding: 0.875rem 1rem;
+        text-align: center;
+    }
+    .chart-wrap {
+        background: rgba(0,0,0,0.25); border-radius: 12px;
+        padding: 1rem; border: 1px solid rgba(255,255,255,0.06);
+    }
+    .gauge-svg-wrap {
+        width: min(200px, 55vw);
+        margin: 0 auto;
+    }
+</style>
+
+<div class="container-fluid px-0" style="max-width:1100px; margin:0 auto;">
+
+    <!-- Hero Row -->
+    <div class="row g-3 mb-4">
+
+        <!-- Gauge Card -->
+        <div class="col-12 col-lg-5">
+            <div class="uv-hero p-4 h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="small fw-bold text-warning mb-3" style="letter-spacing:3px; font-size:0.68rem;">SOLAR UV INDEX</div>
+
+                <div class="gauge-svg-wrap">
+                    <svg viewBox="0 0 200 130" style="width:100%; overflow:visible;">
+                        <path class="uv-gauge-track" d="M 20 120 A 80 80 0 0 1 180 120" stroke-dasharray="none"/>
+                        <path id="uv-gauge-arc" class="uv-gauge-fill"
+                              d="M 20 120 A 80 80 0 0 1 180 120"
+                              stroke="#f59e0b" stroke-dasharray="0 251"/>
+                        <text x="14"  y="135" fill="#64748b" font-size="9" text-anchor="middle">0</text>
+                        <text x="186" y="135" fill="#64748b" font-size="9" text-anchor="middle">11+</text>
+                        <text id="uv-gauge-val" x="100" y="108" fill="white"
+                              font-size="42" font-weight="800" text-anchor="middle"
+                              dominant-baseline="middle">--</text>
+                        <text x="100" y="128" fill="#94a3b8" font-size="10" text-anchor="middle">UV INDEX</text>
+                    </svg>
+                </div>
+
+                <div id="uv-level-badge" class="mt-2 px-4 py-2 rounded-pill fw-bold"
+                     style="font-size:0.85rem; letter-spacing:2px; background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3);">
+                    INITIALIZING
+                </div>
+
+                <div class="w-100 mt-3 px-2">
+                    <div class="uv-scale-bar">
+                        <div id="uv-marker" class="uv-scale-marker" style="left:0%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2" style="font-size:0.6rem; color:#64748b;">
+                        <span>LOW</span><span>MOD</span><span>HIGH</span><span>V-HIGH</span><span>EXT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: safety advice + stats -->
+        <div class="col-12 col-lg-7 d-flex flex-column gap-3">
+
+            <div class="glass-card p-3 p-md-4 flex-grow-1">
+                <div class="small fw-bold mb-3" style="letter-spacing:2px; color:#94a3b8; font-size:0.68rem;">
+                    <i class="bi bi-shield-fill-check me-2 text-warning"></i>HEALTH &amp; SAFETY ADVISORY
+                </div>
+                <p id="uv-advice" class="mb-3 fw-medium" style="color:#e2e8f0; line-height:1.7; font-size:0.9rem;">
+                    System stabilizing sensor arrays for radiation analysis…
+                </p>
+                <div id="uv-tips" class="d-flex flex-wrap gap-2">
+                    <span class="advice-pill"><i class="bi bi-droplet-fill" style="color:#38bdf8;"></i> Sunscreen SPF 30+</span>
+                    <span class="advice-pill"><i class="bi bi-umbrella-fill" style="color:#a78bfa;"></i> Seek Shade</span>
+                    <span class="advice-pill"><i class="bi bi-eyeglasses" style="color:#f59e0b;"></i> Sunglasses</span>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-4">
+                    <div class="stat-chip">
+                        <div class="small text-secondary mb-1" style="font-size:0.62rem; letter-spacing:1px;">CURRENT</div>
+                        <div id="stat-current" class="h4 fw-bold m-0 text-warning">--</div>
+                        <div class="small text-secondary" style="font-size:0.62rem;">UVI</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stat-chip">
+                        <div class="small text-secondary mb-1" style="font-size:0.62rem; letter-spacing:1px;">SESSION HIGH</div>
+                        <div id="stat-high" class="h4 fw-bold m-0 text-danger">--</div>
+                        <div class="small text-secondary" style="font-size:0.62rem;">UVI</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stat-chip">
+                        <div class="small text-secondary mb-1" style="font-size:0.62rem; letter-spacing:1px;">SESSION LOW</div>
+                        <div id="stat-low" class="h4 fw-bold m-0 text-success">--</div>
+                        <div class="small text-secondary" style="font-size:0.62rem;">UVI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-wrap">
+        <div class="small fw-bold mb-3" style="letter-spacing:2px; color:#94a3b8; font-size:0.68rem;">
+            <i class="bi bi-graph-up-arrow me-2 text-warning"></i>LIVE RADIATION STREAM
+        </div>
+        <div style="height:180px;">
+            <canvas id="uvLine"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let uvChart;
+    let sessionHigh = null, sessionLow = null;
+    const ARC_LEN = 251;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx  = document.getElementById('uvLine').getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 0, 180);
+        grad.addColorStop(0, 'rgba(245,158,11,0.35)');
+        grad.addColorStop(1, 'rgba(245,158,11,0)');
+        uvChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: [], datasets: [{ data: [], borderColor: '#f59e0b', backgroundColor: grad, fill: true, tension: 0.4, borderWidth: 2.5, pointRadius: 0 }] },
+            options: {
+                plugins: { legend: { display: false } }, maintainAspectRatio: false,
+                scales: {
+                    x: { display: false },
+                    y: { min: 0, max: 12, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#64748b', stepSize: 3, font: { size: 10 } } }
+                }
+            }
+        });
+    });
+
+    const RISK = [
+        { min:0,  max:2,  label:'LOW',       color:'#10b981', advice:'Safe conditions. No special protection needed for most people.', tips:['Stay Hydrated'] },
+        { min:3,  max:5,  label:'MODERATE',  color:'#eab308', advice:'Take precautions. Wear sunscreen and a hat if staying outside for extended periods.', tips:['Sunscreen SPF 15+','Hat'] },
+        { min:6,  max:7,  label:'HIGH',      color:'#f97316', advice:'Protection essential. Use SPF 30+ sunscreen, seek shade between 10am–4pm.', tips:['Sunscreen SPF 30+','Shade','Sunglasses'] },
+        { min:8,  max:10, label:'VERY HIGH', color:'#ef4444', advice:'High risk of harm. Minimize sun exposure. Cover up and use high-SPF sunscreen.', tips:['SPF 50+','Full Cover','Sunglasses','Limit Exposure'] },
+        { min:11, max:99, label:'EXTREME',   color:'#a855f7', advice:'Dangerous UV levels. Avoid being outside during midday hours. Maximum protection required.', tips:['SPF 50+','Stay Indoors','Full Cover','Sunglasses'] }
+    ];
+    function getRisk(v) { return RISK.find(r => v >= r.min && v <= r.max) || RISK[0]; }
+
+    window.onUpdate = function(d) {
+        if (!d.current.monitoring.active) return;
+        const val = parseFloat(d.current.uv_index);
+        if (isNaN(val)) return;
+        const risk = getRisk(val);
+        const pct  = Math.min(val / 11, 1);
+        document.getElementById('uv-gauge-arc').setAttribute('stroke-dasharray', `${pct * ARC_LEN} ${ARC_LEN}`);
+        document.getElementById('uv-gauge-arc').setAttribute('stroke', risk.color);
+        document.getElementById('uv-gauge-val').textContent = val;
+        document.getElementById('uv-gauge-val').setAttribute('fill', risk.color);
+        const badge = document.getElementById('uv-level-badge');
+        badge.textContent = risk.label;
+        badge.style.background  = risk.color + '22';
+        badge.style.color       = risk.color;
+        badge.style.borderColor = risk.color + '55';
+        document.getElementById('uv-marker').style.left = (pct * 94) + '%';
+        document.getElementById('uv-advice').textContent = risk.advice;
+        document.getElementById('uv-tips').innerHTML = risk.tips.map(t => `<span class="advice-pill">${t}</span>`).join('');
+        document.getElementById('stat-current').textContent = val;
+        if (sessionHigh === null || val > sessionHigh) { sessionHigh = val; document.getElementById('stat-high').textContent = val; }
+        if (sessionLow  === null || val < sessionLow)  { sessionLow  = val; document.getElementById('stat-low').textContent  = val; }
+        if (d.history.length > 0) {
+            uvChart.data.labels = d.history.map(x => x.timestamp);
+            uvChart.data.datasets[0].data = d.history.map(x => x.uv_index);
+            uvChart.update('none');
+        }
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+I am building an IoT weather monitoring and prediction system using Arduino, Python, Flask, and Scikit‑learn.
+
+Sensor readings are collected from an Arduino board and sent to my Python application through Serial Communication.
+
+Hardware setup:
+- Arduino Uno connected via USB
+- Sensors used:
+  • DHT11/DHT22 – temperature and humidity
+  • Rain sensor – precipitation
+  • UV sensor – UV index
+  • BMP180/BMP280 – atmospheric pressure
+
+Arduino sends sensor readings in CSV format through the serial port.
+
+Example format:
+temperature,humidity,precipitation,uv_index,pressure
+
+Example data:
+24.5,65.3,0.0,3.2,1012.8
+
+Python reads this using pyserial:
+
+serial.Serial('COM3', 9600)
+
+The system then uses machine learning models to:
+1. Classify the current weather
+2. Predict weather for the next 2 hours
+
+Models used:
+- weather_model.pkl
+- forecast_model.pkl
+- label_encoder.pkl
+- weather_scaler.pkl
+- forecast_encoder.pkl
+- forecast_scaler.pkl
+
+Current problems:
+
+1. Sometimes the ML models fail to load and show errors like:
+   - model not loading
+   - pickle/joblib error
+   - unknown write error
+
+2. Another issue is with the pressure sensor:
+   - Pressure data is being read from Arduino
+   - But it looks like pressure is not being used properly in the ML prediction
+   - The model may not include pressure in the trained features or feature order may be incorrect.
+
+Please help debug and fix the following:
+
+1. Verify Arduino serial data parsing and ensure pressure is included correctly.
+2. Check if pressure is included in the feature list used by the trained models.
+3. Ensure the feature order used during prediction matches the order used during model training.
+4. Fix model loading so it loads once when the Flask app starts.
+5. Add checks to ensure model files exist before loading.
+6. Add logging to show which sensor values are being passed to the ML model.
+
+Goal:
+The system should read temperature, humidity, precipitation, UV index, and pressure from Arduino and correctly use all of them in the machine learning prediction and 2‑hour forecast without model loading errors.

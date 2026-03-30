@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* ── Hero prediction card ── */
+    .pred-hero {
+        background: linear-gradient(135deg, rgba(99,102,241,0.07), rgba(139,92,246,0.03));
+        border: 1px solid rgba(99,102,241,0.18);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+    }
+
+    /* ── Weather display sub-cards ── */
+    .weather-display-card {
+        background: rgba(0,0,0,0.25);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        transition: all 0.45s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        flex: 1;
+    }
+    .weather-icon-lg {
+        font-size: clamp(1.75rem, 5vw, 2.75rem);
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    .pred-label {
+        font-size: clamp(0.95rem, 2.5vw, 1.4rem);
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        line-height: 1.1;
+    }
+    .pred-sub {
+        font-size: 0.62rem;
+        color: #475569;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 4px;
+    }
+
+    /* ── Confidence arc ── */
+    .conf-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        padding: 0 0.5rem;
+    }
+    .conf-arc-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; stroke-linecap: round; }
+    .conf-arc-fill  {
+        fill: none; stroke: #6366f1; stroke-width: 10; stroke-linecap: round;
+        stroke-dasharray: 0 188; transition: stroke-dasharray 1s ease, stroke 0.6s ease;
+    }
+    .conf-meta {
+        font-size: 0.57rem;
+        color: #475569;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: center;
+        margin-top: 3px;
+    }
+
+    /* ── Info cards ── */
+    .info-card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 1rem 1.125rem;
+        height: 100%;
+    }
+    .info-card-label {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #475569;
+        text-transform: uppercase;
+        margin-bottom: 0.65rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    /* ── Feature bars ── */
+    .feat-bar-bg   { background: rgba(255,255,255,0.06); border-radius: 999px; height: 5px; overflow: hidden; }
+    .feat-bar-fill { height: 100%; border-radius: 999px; transition: width 1s ease; }
+
+    /* ── Model tags ── */
+    .model-tag {
+        font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em;
+        padding: 3px 9px; border-radius: 999px;
+        border: 1px solid rgba(99,102,241,0.35);
+        color: #818cf8; background: rgba(99,102,241,0.08);
+    }
+
+    /* ── Status badge ── */
+    .standby-pulse {
+        display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+        background: #94a3b8; margin-right: 5px;
+        animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── Page header ── */
+    .pred-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+    }
+
+    /* ── Snapshot row ── */
+    .snap-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .snap-row:last-child { border-bottom: none; }
+    .snap-key { font-size: 0.78rem; color: #64748b; }
+    .snap-val { font-size: 0.82rem; font-weight: 700; color: #e2e8f0; }
+
+    @media (max-width: 767.98px) {
+        .pred-hero-inner { flex-direction: column; }
+        .conf-col { padding: 0.4rem 0; }
+        .weather-display-card { flex-direction: column; text-align: center; }
+    }
+</style>
+
+<div class="container-fluid px-0" style="max-width:1200px; margin:0 auto;">
+
+    <!-- ── Page header ── -->
+    <div class="pred-page-header">
+        <div>
+            <div style="font-size:0.58rem; font-weight:700; letter-spacing:3px; color:#818cf8; text-transform:uppercase; margin-bottom:3px;">Neural Network Analysis</div>
+            <h5 class="fw-bold m-0 text-white" style="font-size:clamp(0.95rem,2.5vw,1.25rem); letter-spacing:-0.3px;">AI Prediction Insights</h5>
+        </div>
+        <div id="pred-status-badge" class="d-flex align-items-center px-3 py-1 rounded-pill"
+             style="background:rgba(148,163,184,0.1); border:1px solid rgba(148,163,184,0.2); font-size:0.7rem; color:#94a3b8; font-weight:700; letter-spacing:1px; white-space:nowrap;">
+            <span class="standby-pulse" id="status-dot"></span>
+            <span id="status-text">STANDBY</span>
+        </div>
+    </div>
+
+    <!-- ── Prediction Hero ── -->
+    <div class="pred-hero mb-2">
+        <div class="d-flex align-items-stretch gap-2 pred-hero-inner">
+
+            <!-- Current prediction -->
+            <div style="flex:1; display:flex; flex-direction:column; gap:0.4rem; min-width:0;">
+                <div style="font-size:0.57rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#64748b;">Current Weather</div>
+                <div id="current-display" class="weather-display-card">
+                    <div id="current-icon" class="weather-icon-lg">❓</div>
+                    <div>
+                        <div id="current-label" class="pred-label text-secondary">WAITING FOR ARDUINO</div>
+                        <div class="pred-sub">Real-time classification</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confidence arc -->
+            <div class="conf-col">
+                <svg viewBox="0 0 130 100" style="width:clamp(80px,14vw,108px); overflow:visible;">
+                    <path class="conf-arc-track" d="M 10 95 A 55 55 0 0 1 120 95"/>
+                    <path id="conf-arc" class="conf-arc-fill" d="M 10 95 A 55 55 0 0 1 120 95"/>
+                    <text id="conf-pct" x="65" y="80" fill="white" font-size="20" font-weight="800"
+                          text-anchor="middle" dominant-baseline="middle">0%</text>
+                    <text x="65" y="96" fill="#64748b" font-size="8.5" text-anchor="middle">CONFIDENCE</text>
+                </svg>
+                <div class="conf-meta">Model Certainty</div>
+            </div>
+
+            <!-- 2-hour forecast -->
+            <div style="flex:1; display:flex; flex-direction:column; gap:0.4rem; min-width:0;">
+                <div style="font-size:0.57rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#64748b;">2-Hour Forecast</div>
+                <div id="forecast-display" class="weather-display-card">
+                    <div id="forecast-icon" class="weather-icon-lg" style="opacity:0.75;">❓</div>
+                    <div>
+                        <div id="forecast-label" class="pred-label text-secondary">N/A</div>
+                        <div class="pred-sub">Projected condition</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Info Cards ── -->
+    <div class="row g-2 mb-3">
+
+        <!-- Currently Using Model (dynamic) -->
+        <div class="col-12 col-md-4">
+            <div class="info-card" style="background:linear-gradient(135deg,rgba(167,139,250,0.07),rgba(99,102,241,0.03)); border-color:rgba(167,139,250,0.2);">
+                <div class="info-card-label"><i class="bi bi-cpu-fill" style="color:#a78bfa;"></i>Currently Using Model</div>
+
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span id="cu-icon" style="font-size:1.6rem; line-height:1; flex-shrink:0;">🤖</span>
+                    <div>
+                        <div id="cu-name" style="font-size:1rem; font-weight:800; color:#f8fafc; letter-spacing:-0.01em;">--</div>
+                        <div id="cu-subtitle" style="font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-top:1px;">Highest scoring model</div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mb-2">
+                    <div style="flex:1; min-width:80px; background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.18); border-radius:7px; padding:5px 8px; text-align:center;">
+                        <div style="font-size:0.48rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-bottom:2px;">Accuracy</div>
+                        <div id="cu-acc" style="font-size:0.95rem; font-weight:800; color:#a78bfa;">--</div>
+                    </div>
+                    <div style="flex:1; min-width:80px; background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.18); border-radius:7px; padding:5px 8px; text-align:center;">
+                        <div style="font-size:0.48rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-bottom:2px;">WeatherAPI</div>
+                        <div id="cu-match" style="font-size:0.95rem; font-weight:800; color:#94a3b8;">--</div>
+                    </div>
+                </div>
+
+                <div id="cu-reason" style="font-size:0.62rem; color:#475569; font-weight:700; font-style:italic;"></div>
+            </div>
+        </div>
+
+        <!-- Feature Importance -->
+        <div class="col-12 col-md-4">
+            <div class="info-card">
+                <div class="info-card-label"><i class="bi bi-sliders"></i>Feature Importance</div>
+                <div id="feat-bars" class="d-flex flex-column gap-2">
+                    <div style="color:#475569; font-size:0.78rem;">Loading real model data…</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last Input Snapshot -->
+        <div class="col-12 col-md-4">
+            <div class="info-card">
+                <div class="info-card-label"><i class="bi bi-cpu"></i>Last Input Snapshot</div>
+                <div class="d-flex flex-column" style="gap:0;">
+                    <div class="snap-row"><span class="snap-key">Temperature</span><span id="snap-temp" class="snap-val">--</span></div>
+                    <div class="snap-row"><span class="snap-key">Humidity</span><span id="snap-hum" class="snap-val">--</span></div>
+                    <div class="snap-row"><span class="snap-key">Pressure</span><span id="snap-pres" class="snap-val">--</span></div>
+                    <div class="snap-row"><span class="snap-key">UV Index</span><span id="snap-uv" class="snap-val">--</span></div>
+                    <div class="snap-row"><span class="snap-key">Precipitation</span><span id="snap-precip" class="snap-val">--</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         BIG MODEL COMPARISON TABLE
+    ══════════════════════════════════════════════ -->
+    <div style="font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:#818cf8; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="bi bi-table"></i> Model Comparison
+        <span style="margin-left:auto; font-size:0.52rem; color:#334155; font-weight:700; letter-spacing:0.05em;">Live • Updates every 2s</span>
+    </div>
+
+    <div class="info-card p-0 mb-3" style="overflow:hidden;">
+        <table class="w-100" id="model-comparison-table" style="border-collapse:collapse;">
+            <thead>
+                <tr style="background:rgba(99,102,241,0.08); border-bottom:1px solid rgba(255,255,255,0.07);">
+                    <th style="padding:0.6rem 1rem; font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#475569; text-align:left;">Model</th>
+                    <th style="padding:0.6rem 0.75rem; font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#475569; text-align:center;">Current Prediction</th>
+                    <th style="padding:0.6rem 0.75rem; font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#475569; text-align:center;">2-Hour Forecast</th>
+                    <th style="padding:0.6rem 0.75rem; font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#475569; text-align:center;">Accuracy</th>
+                    <th style="padding:0.6rem 1rem; font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#475569; text-align:center;">Match WeatherAPI</th>
+                </tr>
+            </thead>
+            <tbody id="cmp-tbody">
+                <tr><td colspan="5" style="padding:1.5rem; text-align:center; color:#475569; font-size:0.78rem;">Waiting for data…</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         BEST MODEL ANALYSIS CARD
+    ══════════════════════════════════════════════ -->
+    <div style="font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:#a78bfa; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
+        <i class="bi bi-trophy-fill"></i> Best Model Analysis
+    </div>
+
+    <div id="best-model-card" class="info-card mb-2"
+         style="background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(99,102,241,0.05)); border-color:rgba(167,139,250,0.25);">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+
+            <!-- Trophy icon -->
+            <div style="font-size:2.5rem; line-height:1; flex-shrink:0;" id="bma-icon">🏆</div>
+
+            <!-- Primary info -->
+            <div style="flex:1; min-width:160px;">
+                <div style="font-size:0.55rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:#64748b; margin-bottom:4px;">BEST MODEL ANALYSIS</div>
+                <div id="bma-name" style="font-size:1.3rem; font-weight:800; color:#f8fafc; letter-spacing:-0.02em; line-height:1.1;">--</div>
+                <div id="bma-reason" style="font-size:0.62rem; color:#64748b; font-weight:700; margin-top:3px;">--</div>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="d-flex gap-3 flex-wrap">
+                <div style="text-align:center; min-width:70px;">
+                    <div style="font-size:0.52rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-bottom:2px;">Accuracy</div>
+                    <div id="bma-acc" style="font-size:1.1rem; font-weight:800; color:#a78bfa;">--</div>
+                </div>
+                <div style="text-align:center; min-width:100px;">
+                    <div style="font-size:0.52rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-bottom:2px;">Real Weather Match</div>
+                    <div id="bma-match" style="font-size:0.9rem; font-weight:800; color:#94a3b8;">--</div>
+                </div>
+                <div style="text-align:center; min-width:80px;">
+                    <div style="font-size:0.52rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#475569; margin-bottom:2px;">Confidence</div>
+                    <div id="bma-conf-label" style="font-size:0.9rem; font-weight:800; color:#94a3b8;">--</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const ICONS  = { Sunny:'🌤', Rainy:'🌧', Cloudy:'☁️', Snowy:'❄️', Unknown:'❓', 'N/A':'❓' };
+    const COLORS = { Sunny:'#f59e0b', Rainy:'#3b82f6', Cloudy:'#94a3b8', Snowy:'#bae6fd', Unknown:'#64748b', 'N/A':'#64748b' };
+    const ARC_LEN = 188;
+
+    /* Palette cycled across features */
+    const FEAT_COLORS = ['#38bdf8','#fb923c','#818cf8','#f59e0b','#4ade80','#e879f9','#f87171','#2dd4bf'];
+
+    function styleCard(el, type) {
+        const c = COLORS[type] || '#64748b';
+        el.style.borderColor = c + '44';
+        el.style.background  = c + '11';
+        el.style.boxShadow   = `0 0 20px ${c}14`;
+    }
+
+    /* ── Load feature importance from backend ── */
+    async function loadModelInfo() {
+        try {
+            const res = await fetch('/model_info');
+            const d   = await res.json();
+            const m   = d.current_model;
+
+            const barsEl = document.getElementById('feat-bars');
+            if (!m) {
+                barsEl.innerHTML = '<div style="color:#ef4444; font-size:0.78rem;">No model file found.</div>';
+                return;
+            }
+            if (!m.feature_importances || m.feature_importances.length === 0) {
+                barsEl.innerHTML = '<div style="color:#475569; font-size:0.78rem;">Feature importances not available for this model type.</div>';
+                return;
+            }
+            barsEl.innerHTML = m.feature_importances.map((f, i) => {
+                const color = FEAT_COLORS[i % FEAT_COLORS.length];
+                return `
+                <div>
+                    <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem; font-weight:700; color:#e2e8f0;">
+                        <span>${f.name}</span><span style="color:${color};">${f.value}%</span>
+                    </div>
+                    <div class="feat-bar-bg">
+                        <div class="feat-bar-fill" style="width:${f.value}%; background:${color};"></div>
+                    </div>
+                </div>`;
+            }).join('');
+        } catch (e) {
+            console.error('Model info fetch failed:', e);
+            document.getElementById('feat-bars').innerHTML = '<div style="color:#ef4444; font-size:0.78rem;">Could not load model info.</div>';
+        }
+    }
+
+    /* ── Currently Using Model card ── */
+    const MODEL_ICONS = {
+        'Random Forest': '🌲', 'Decision Tree': '🌳',
+        'Gradient Boosting': '⚡', 'K-Nearest Neighbours': '🔭'
+    };
+    function updateCurrentlyUsing(bm) {
+        const name = bm.name || '--';
+        document.getElementById('cu-name').textContent = name;
+        document.getElementById('cu-icon').textContent = MODEL_ICONS[name] || '🤖';
+        document.getElementById('cu-acc').textContent  = bm.accuracy || '--';
+        document.getElementById('cu-reason').textContent = bm.reason || '';
+        const matchEl = document.getElementById('cu-match');
+        if (bm.name && bm.name !== '--') {
+            if (bm.match) { matchEl.textContent = 'Match ✔'; matchEl.style.color = '#4ade80'; }
+            else           { matchEl.textContent = 'No match'; matchEl.style.color = '#f87171'; }
+        } else {
+            matchEl.textContent = '--'; matchEl.style.color = '#94a3b8';
+        }
+    }
+
+    /* ── Model comparison table helpers ── */
+    const MODEL_DEFS = [
+        { key: 'decision_tree', label: 'Decision Tree',      badge: 'DT',  color: '#fb923c', bg: 'rgba(251,146,60,0.1)',  border: 'rgba(251,146,60,0.2)'  },
+        { key: 'gradient_boosting', label: 'Gradient Boosting', badge: 'GB',  color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.2)'  },
+        { key: 'knn',           label: 'K-Nearest Neighbours',badge:'KNN', color: '#4ade80', bg: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.2)'   },
+        { key: 'random_forest', label: 'Random Forest',      badge: 'RF',  color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.2)' },
+    ];
+
+    function accToTier(acc) {
+        const v = parseFloat(String(acc).replace('%',''));
+        if (isNaN(v))   return { label: '--',    color: '#64748b' };
+        if (v >= 95)    return { label: 'High',  color: '#4ade80' };
+        if (v >= 85)    return { label: 'Medium',color: '#f59e0b' };
+        return              { label: 'Low',   color: '#f87171' };
+    }
+
+    function buildComparisonTable(models, actualWeather, bestKey) {
+        const tbody = document.getElementById('cmp-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = MODEL_DEFS.map(def => {
+            const m       = models[def.key] || {};
+            const cur     = m.current  || '--';
+            const fct     = m.forecast || '--';
+            const acc     = m.accuracy || '--';
+            const isMatch = actualWeather && cur === actualWeather;
+            const isBest  = def.key === bestKey;
+            const tier    = accToTier(acc);
+
+            const rowBg = isBest
+                ? 'background:linear-gradient(90deg,rgba(167,139,250,0.09),rgba(99,102,241,0.04));'
+                : isMatch
+                    ? 'background:rgba(34,197,94,0.04);'
+                    : '';
+
+            const matchCell = actualWeather
+                ? (isMatch
+                    ? '<span style="color:#4ade80; font-size:1rem; font-weight:800;">✅</span>'
+                    : '<span style="color:#f87171; font-size:1rem; font-weight:800;">❌</span>')
+                : '<span style="color:#475569; font-size:0.78rem;">--</span>';
+
+            return `
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${rowBg} transition:background 0.3s;">
+                <td style="padding:0.65rem 1rem;">
+                    <div class="d-flex align-items-center gap-2">
+                        <span style="font-size:0.5rem; font-weight:800; padding:2px 6px; border-radius:4px; background:${def.bg}; color:${def.color}; border:1px solid ${def.border}; letter-spacing:0.06em; text-transform:uppercase; flex-shrink:0;">${def.badge}</span>
+                        <span style="font-size:0.82rem; font-weight:700; color:#e2e8f0;">${def.label}</span>
+                        ${isBest ? '<span style="font-size:0.48rem; font-weight:800; padding:1px 5px; border-radius:3px; background:rgba(167,139,250,0.2); color:#a78bfa; border:1px solid rgba(167,139,250,0.3); text-transform:uppercase; letter-spacing:0.06em; margin-left:2px;">★ Best</span>' : ''}
+                    </div>
+                </td>
+                <td style="padding:0.65rem 0.75rem; text-align:center;">
+                    <span style="font-size:0.88rem; font-weight:800; color:${COLORS[cur] || '#94a3b8'};">${cur !== '--' ? (ICONS[cur] || '') + ' ' + cur.toUpperCase() : '--'}</span>
+                </td>
+                <td style="padding:0.65rem 0.75rem; text-align:center;">
+                    <span style="font-size:0.82rem; font-weight:700; color:${COLORS[fct] || '#64748b'};">${fct !== '--' ? (ICONS[fct] || '') + ' ' + fct.toUpperCase() : '--'}</span>
+                </td>
+                <td style="padding:0.65rem 0.75rem; text-align:center;">
+                    <span style="font-size:0.9rem; font-weight:800; color:${tier.color};">${acc}</span>
+                </td>
+                <td style="padding:0.65rem 1rem; text-align:center;">${matchCell}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function updateBestModelCard(bm, cur) {
+        const conf = cur.confidence || 0;
+        document.getElementById('bma-name').textContent   = bm.name   || '--';
+        document.getElementById('bma-reason').textContent = bm.reason || '--';
+        document.getElementById('bma-acc').textContent    = bm.accuracy || '--';
+        const matchEl = document.getElementById('bma-match');
+        if (bm.match) {
+            matchEl.textContent = 'Yes ✔';
+            matchEl.style.color = '#4ade80';
+        } else if (bm.name && bm.name !== '--') {
+            matchEl.textContent = 'No ✖';
+            matchEl.style.color = '#f87171';
+        } else {
+            matchEl.textContent = '--';
+            matchEl.style.color = '#94a3b8';
+        }
+        const confEl = document.getElementById('bma-conf-label');
+        if (conf >= 70) { confEl.textContent = 'High';   confEl.style.color = '#4ade80'; }
+        else if (conf >= 45) { confEl.textContent = 'Medium'; confEl.style.color = '#f59e0b'; }
+        else if (conf > 0)   { confEl.textContent = 'Low';    confEl.style.color = '#f87171'; }
+        else                 { confEl.textContent = '--';      confEl.style.color = '#94a3b8'; }
+    }
+
+    /* ── Live sensor data update (called by base.html every 2s) ── */
+    window.onUpdate = function(d) {
+        const cur    = d.current;
+        const dot    = document.getElementById('status-dot');
+        const stxt   = document.getElementById('status-text');
+        const sbadge = document.getElementById('pred-status-badge');
+
+        if (cur.monitoring.active) {
+            dot.style.background    = '#4ade80';
+            stxt.textContent        = 'LIVE';
+            sbadge.style.background = 'rgba(74,222,128,0.1)';
+            sbadge.style.borderColor= 'rgba(74,222,128,0.3)';
+            sbadge.style.color      = '#4ade80';
+        } else {
+            dot.style.background    = '#94a3b8';
+            stxt.textContent        = 'STANDBY';
+            sbadge.style.background = 'rgba(148,163,184,0.1)';
+            sbadge.style.borderColor= 'rgba(148,163,184,0.2)';
+            sbadge.style.color      = '#94a3b8';
+        }
+
+        /* Always update snapshot */
+        document.getElementById('snap-temp').textContent   = cur.temperature   != null ? cur.temperature   + ' °C'  : '--';
+        document.getElementById('snap-hum').textContent    = cur.humidity      != null ? cur.humidity      + ' %'   : '--';
+        document.getElementById('snap-pres').textContent   = cur.pressure      != null ? cur.pressure      + ' hPa' : '--';
+        document.getElementById('snap-uv').textContent     = cur.uv_index      != null ? cur.uv_index               : '--';
+        document.getElementById('snap-precip').textContent = cur.precipitation != null ? cur.precipitation + ' %'   : '--';
+
+        /* Always update comparison table, best model card, and currently using */
+        const bm = d.best_model || {};
+        buildComparisonTable(d.models || {}, cur.actual_weather || null, bm.key || null);
+        updateBestModelCard(bm, cur);
+        updateCurrentlyUsing(bm);
+
+        if (!cur.monitoring.active) return;
+
+        const pred = cur.prediction   || 'Unknown';
+        const fore = cur.forecast_2hr || 'N/A';
+        const conf = cur.confidence   || 0;
+
+        const curCard = document.getElementById('current-display');
+        document.getElementById('current-icon').textContent  = ICONS[pred] || '❓';
+        document.getElementById('current-label').textContent = pred.toUpperCase();
+        document.getElementById('current-label').style.color = COLORS[pred] || '#fff';
+        styleCard(curCard, pred);
+
+        const foreCard = document.getElementById('forecast-display');
+        document.getElementById('forecast-icon').textContent  = ICONS[fore] || '❓';
+        document.getElementById('forecast-label').textContent = fore.toUpperCase();
+        document.getElementById('forecast-label').style.color = COLORS[fore] || '#fff';
+        styleCard(foreCard, fore);
+
+        const pct   = Math.min(conf / 100, 1);
+        const arcEl = document.getElementById('conf-arc');
+        arcEl.setAttribute('stroke-dasharray', `${pct * ARC_LEN} ${ARC_LEN}`);
+        arcEl.setAttribute('stroke', conf >= 70 ? '#4ade80' : conf >= 45 ? '#f59e0b' : '#ef4444');
+        document.getElementById('conf-pct').textContent = conf + '%';
+    };
+
+    /* Fetch model info once on page load */
+    document.addEventListener('DOMContentLoaded', loadModelInfo);
+</script>
+{% endblock %}

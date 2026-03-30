@@ -1,0 +1,26 @@
+{
+  "decision_tree": {
+    "current_accuracy": 0.9738,
+    "current_accuracy_pct": "97.4%",
+    "forecast_accuracy": 0.5275,
+    "forecast_accuracy_pct": "52.8%"
+  },
+  "gradient_boosting": {
+    "current_accuracy": 0.9971,
+    "current_accuracy_pct": "99.7%",
+    "forecast_accuracy": 0.5833,
+    "forecast_accuracy_pct": "58.3%"
+  },
+  "knn": {
+    "current_accuracy": 0.9792,
+    "current_accuracy_pct": "97.9%",
+    "forecast_accuracy": 0.5354,
+    "forecast_accuracy_pct": "53.5%"
+  },
+  "random_forest": {
+    "current_accuracy": 0.9904,
+    "current_accuracy_pct": "99.0%",
+    "forecast_accuracy": 0.6012,
+    "forecast_accuracy_pct": "60.1%"
+  }
+}

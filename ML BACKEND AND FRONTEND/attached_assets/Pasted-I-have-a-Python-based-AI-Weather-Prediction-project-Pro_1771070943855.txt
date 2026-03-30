@@ -1,0 +1,155 @@
+I have a Python-based AI Weather Prediction project.
+
+Project files:
+
+- weather_model.pkl
+- label_encoder.pkl
+- live_predict.py
+- train_model.py
+- predict_weather.py
+
+I want a Flask-based Web Dashboard with a structured layout like this:
+
+====================================================
+DASHBOARD STRUCTURE
+====================================================
+
+Main Navigation Layout:
+
+Dashboard
+│
+├── Main (Summary View)
+├── Temperature & Humidity
+├── Precipitation
+├── UV Index
+├── Predicted Weather
+│
+====================================================
+PAGE DETAILS
+====================================================
+
+1️⃣ MAIN DASHBOARD (Summary Page)
+
+This is the landing page.
+
+It must show ALL data together:
+
+- Current Temperature
+- Current Humidity
+- Current Precipitation
+- Current UV Index
+- Predicted Weather (big centered badge)
+
+Layout:
+- 4 summary cards in one row
+- One large prediction section at the top
+- Small mini graphs inside each card (last 20 readings)
+
+This page is a full system overview.
+
+----------------------------------------------------
+
+2️⃣ TEMPERATURE & HUMIDITY PAGE
+
+This page focuses only on:
+
+- Large Temperature display
+- Large Humidity display
+
+Visualizations required:
+- Line graph for temperature (last 20 readings)
+- Line graph for humidity (last 20 readings)
+- Progress bar for temperature (0–50°C)
+- Circular/doughnut visualization for humidity %
+
+----------------------------------------------------
+
+3️⃣ PRECIPITATION PAGE
+
+This page focuses only on rain data.
+
+Must include:
+- Large numeric precipitation %
+- Bar chart of last 20 values
+- Rain intensity indicator:
+    0–20% → Light
+    21–60% → Moderate
+    61–100% → Heavy
+
+----------------------------------------------------
+
+4️⃣ UV INDEX PAGE
+
+Must include:
+- Large UV numeric display
+- Line graph
+- UV Risk color indicator:
+    0–2 → Green (Low)
+    3–5 → Yellow (Moderate)
+    6–7 → Orange (High)
+    8–10 → Red (Very High)
+    11+ → Purple (Extreme)
+
+----------------------------------------------------
+
+5️⃣ PREDICTED WEATHER PAGE
+
+Dedicated page showing:
+
+- Big animated weather icon
+- Prediction text
+- Colored badge:
+    Sunny → Yellow
+    Rainy → Blue
+    Snowy → Light Blue
+    Cloudy → Grey
+- Prediction confidence (if available)
+
+====================================================
+BACKEND REQUIREMENTS (Flask - app.py)
+====================================================
+
+- Load weather_model.pkl
+- Load label_encoder.pkl
+- Read Arduino serial (COM7, 9600)
+- Convert sensor values into DataFrame:
+
+    ["Temperature", "Humidity", "Precipitation (%)", "UV Index"]
+
+- Predict weather
+- Store rolling last 20 readings
+- Provide /data endpoint returning JSON
+- Handle serial errors safely (return "No Data")
+
+====================================================
+FRONTEND REQUIREMENTS
+====================================================
+
+- Bootstrap 5
+- Chart.js
+- Dark IoT-style dashboard
+- Responsive design
+- Auto update every 2 seconds using fetch()
+- Do NOT reload page
+- Charts must update smoothly without reinitializing
+
+====================================================
+PROJECT STRUCTURE
+====================================================
+
+weather_ai_project/
+│
+├── app.py
+├── templates/
+│   ├── base.html
+│   ├── index.html (Main Dashboard)
+│   ├── temp_humidity.html
+│   ├── precipitation.html
+│   ├── uv_index.html
+│   └── prediction.html
+├── static/
+│
+====================================================
+
+Generate complete runnable Flask application with clean modular code.
+Make it look like a professional IoT Monitoring System.
