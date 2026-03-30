@@ -1,0 +1,153 @@
+Now we’re building a real forecasting engine 😈🌦️
+Not just fake rain. Not just classification.
+A mini weather lab.
+
+Here’s an **advanced, complete Replit AI prompt** that upgrades your entire system to proper 2-hour forecasting.
+
+---
+
+# 🚀 MASTER PROMPT FOR REPLIT AI
+
+(Arduino + Dataset Builder + Forecast Training Logic)
+
+I am building a 2-hour ahead AI Weather Forecasting system using Arduino + Flask + Machine Learning.
+
+I need three things generated:
+
+---
+
+## PART 1 — ADVANCED ARDUINO FORECAST SIMULATOR
+
+Create an Arduino UNO sketch that:
+
+1. Simulates full atmospheric evolution over 2 hours.
+2. Sends data every 5 seconds in this format:
+
+temperature,humidity,precipitation,uv_index,pressure
+
+3. Simulates these realistic phases:
+
+PHASE 1 — Sunny (0–30 minutes)
+
+* Temp: 30°C
+* Humidity: 45%
+* Precipitation: 0%
+* UV: 8
+* Pressure: 1014 hPa
+
+PHASE 2 — Cloud build-up (30–60 minutes)
+
+* Temp slowly decreases
+* Humidity increases
+* UV drops gradually
+* Pressure slowly drops
+
+PHASE 3 — Pre-rain instability (60–90 minutes)
+
+* Humidity high (70–80%)
+* Pressure dropping faster
+* UV near zero
+* Light precipitation begins
+
+PHASE 4 — Rain starts (90–120 minutes)
+
+* Temp: 22–24°C
+* Humidity: 85–95%
+* Precipitation: 70–90%
+* UV: 0–1
+* Pressure: 995–1002 hPa
+
+Requirements:
+
+* Smooth transitions (no random jumps)
+* Realistic atmospheric drift
+* No sensor libraries
+* Serial.begin(9600)
+* Clean, structured code
+* Commented sections for each phase
+
+---
+
+## PART 2 — AUTO DATASET BUILDER (Python)
+
+Generate a Python script that:
+
+1. Reads weather_log.csv
+2. Creates 2-hour ahead forecasting dataset
+
+Assume:
+
+* Data collected every 5 minutes
+* 2 hours = 24 rows ahead
+
+Create:
+
+X = current row features
+Y = weather condition 24 rows later
+
+Save new dataset as:
+forecast_dataset.csv
+
+---
+
+## PART 3 — FORECAST TRAINING SCRIPT
+
+Generate a new training script that:
+
+1. Uses forecast_dataset.csv
+2. Trains RandomForestClassifier
+3. Saves:
+   forecast_model.pkl
+   forecast_encoder.pkl
+
+This model should predict:
+“What will weather be 2 hours later?”
+
+---
+
+## PART 4 — MODIFY FLASK APP
+
+Update Flask app so it:
+
+1. Loads forecast_model.pkl
+
+2. Predicts:
+
+   * Current Weather
+   * 2-Hour Forecast
+
+3. Returns both in JSON:
+   {
+   current_weather: "",
+   forecast_2hr: ""
+   }
+
+---
+
+## GOAL
+
+This system must allow:
+
+Arduino → Serial → Flask → Log Data → Shift Dataset → Train Forecast Model → Predict 2 Hours Ahead.
+
+Code must be clean, production-ready, and modular.
+
+Generate all files clearly separated.
+
+---
+
+🔥 This turns your project from “mini project” into:
+
+IoT + Time Series Forecasting + AI + Web Monitoring System.
+
+If you want next level after this:
+
+• LSTM deep learning forecast
+• Storm detection algorithm
+• Pressure anomaly detection
+• Auto retraining pipeline
+• Cloud deployment
+
+We can go full research mode.
+
+Your move.

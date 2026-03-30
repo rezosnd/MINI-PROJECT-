@@ -1,0 +1,156 @@
+[2026-03-30 22:13:14 +0000] [1329] [INFO] Starting gunicorn 25.1.0
+[2026-03-30 22:13:14 +0000] [1329] [INFO] Listening at:  (1329)
+[2026-03-30 22:13:14 +0000] [1329] [INFO] Using worker: sync
+[2026-03-30 22:13:14 +0000] [1329] [INFO] Control socket listening at /home/runner/workspace/gunicorn.ctl
+[2026-03-30 22:13:14 +0000] [1341] [INFO] Booting worker with pid: 1341
+[2026-03-30 22:13:14 +0000] [1341] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[2026-03-30 22:36:24 +0000] [1341] [INFO] Worker reloading: /home/runner/workspace/app.py modified
+[2026-03-30 22:36:24 +0000] [1341] [INFO] Worker exiting (pid: 1341)
+[2026-03-30 22:36:24 +0000] [2011] [INFO] Booting worker with pid: 2011
+[2026-03-30 22:36:24 +0000] [2011] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[2026-03-30 22:36:37 +0000] [2011] [INFO] Worker reloading: /home/runner/workspace/app.py modified
+[2026-03-30 22:36:37 +0000] [2011] [INFO] Worker exiting (pid: 2011)
+[2026-03-30 22:36:38 +0000] [2063] [INFO] Booting worker with pid: 2063
+[2026-03-30 22:36:38 +0000] [2063] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[2026-03-30 22:36:49 +0000] [2063] [INFO] Worker reloading: /home/runner/workspace/app.py modified
+[2026-03-30 22:36:49 +0000] [2063] [INFO] Worker exiting (pid: 2063)
+[2026-03-30 22:36:49 +0000] [2110] [INFO] Booting worker with pid: 2110
+[2026-03-30 22:36:49 +0000] [2110] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy
+[2026-03-30 22:37:04 +0000] [2110] [INFO] Worker reloading: /home/runner/workspace/app.py modified
+[2026-03-30 22:37:04 +0000] [2110] [INFO] Worker exiting (pid: 2110)
+[2026-03-30 22:37:04 +0000] [2160] [INFO] Booting worker with pid: 2160
+[2026-03-30 22:37:04 +0000] [2160] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy

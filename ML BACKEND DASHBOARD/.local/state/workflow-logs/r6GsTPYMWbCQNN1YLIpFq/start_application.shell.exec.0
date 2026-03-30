@@ -1,0 +1,32 @@
+[2026-03-30 22:42:53 +0000] [100] [INFO] Starting gunicorn 25.1.0
+[2026-03-30 22:42:53 +0000] [100] [INFO] Listening at:  (100)
+[2026-03-30 22:42:53 +0000] [100] [INFO] Using worker: sync
+[2026-03-30 22:42:53 +0000] [119] [INFO] Booting worker with pid: 119
+[2026-03-30 22:42:53 +0000] [100] [INFO] Control socket listening at /home/runner/workspace/gunicorn.ctl
+[2026-03-30 22:42:53 +0000] [119] [WARNING] Reloader is on. Use in development only!
+
+======================================================================
+LOADING MODELS
+======================================================================
+  + Loaded: /home/runner/workspace/models/random_forest_current.pkl
+  + Loaded: /home/runner/workspace/models/label_encoder.pkl
+  + Loaded: /home/runner/workspace/models/weather_scaler.pkl
+  + Loaded: /home/runner/workspace/models/forecast_model.pkl
+  + Loaded: /home/runner/workspace/models/forecast_encoder.pkl
+  + Loaded: /home/runner/workspace/models/forecast_scaler.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_current.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_current.pkl
+  + Loaded: /home/runner/workspace/models/knn_current.pkl
+  + Loaded: /home/runner/workspace/models/decision_tree_forecast.pkl
+  + Loaded: /home/runner/workspace/models/gradient_boosting_forecast.pkl
+  + Loaded: /home/runner/workspace/models/knn_forecast.pkl
+  + Loaded: /home/runner/workspace/models/model_accuracies.json
+======================================================================
+FEATURE VALIDATION
+  [OK]  weather_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+  [OK]  forecast_scaler features verified: ['Temperature', 'Humidity', 'Precipitation (%)', 'UV Index', 'Pressure', 'hour_of_day', 'day_of_week', 'month']
+======================================================================
+[OK] Current weather prediction models loaded successfully
+[OK] Forecast prediction models loaded successfully
+======================================================================
+[WeatherAPI] 'Partly cloudy' → Cloudy

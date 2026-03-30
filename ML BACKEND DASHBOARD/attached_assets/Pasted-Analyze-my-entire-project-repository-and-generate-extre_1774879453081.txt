@@ -1,0 +1,375 @@
+Analyze my entire project repository and generate extremely detailed academic‑level documentation including every file, module, model, architecture, dataset, API, dashboard, and workflow.
+
+Generate as much information as possible.
+
+1. Project Title
+Use Academic Title:
+
+Intelligent Microclimate Monitoring and Prediction System Using IoT and Machine Learning
+
+Also suggest 3 alternate academic titles
+
+2. Abstract (Academic Style)
+Write:
+
+Problem statement
+
+Objective
+
+Methodology
+
+Technologies used
+
+Results
+
+Conclusion
+
+3. Problem Statement
+Explain:
+
+Why microclimate monitoring is important
+
+Limitations of traditional weather systems
+
+Need for IoT + ML solution
+
+4. Objectives
+List:
+
+Real‑time monitoring
+
+Forecast prediction
+
+Multi‑model comparison
+
+IoT integration
+
+Dashboard visualization
+
+5. System Architecture
+Explain full architecture:
+
+Sensors → Arduino → Serial Communication → Flask → ML Models → Dashboard → Prediction
+Explain layers:
+
+Hardware Layer
+Data Processing Layer
+Machine Learning Layer
+Backend Layer
+Frontend Layer
+Also generate architecture diagram
+
+6. Hardware Components
+Explain:
+
+Sensors Used
+Temperature & Humidity Sensor (DHT11 / DHT22)
+Rain Sensor
+UV Sensor
+Pressure Sensor (BMP180 / BMP280)
+Arduino Uno
+
+Explain:
+
+Working principle
+
+Role in project
+
+Why selected
+
+7. Software Stack
+Backend
+
+Python
+
+Flask
+
+Machine Learning
+
+Scikit‑learn
+
+Decision Tree
+
+Gradient Boosting
+
+KNN
+
+Random Forest
+
+Frontend
+
+HTML
+
+CSS
+
+Bootstrap
+
+Chart.js
+
+Communication
+
+PySerial
+
+USB Serial
+
+8. Dataset Explanation
+Explain:
+
+Synthetic dataset generation
+
+12,000 rows
+
+Balanced dataset
+
+Classes:
+
+Sunny
+Cloudy
+Rainy
+
+Features:
+
+Temperature
+
+Humidity
+
+Precipitation
+
+UV Index
+
+Pressure
+
+Hour
+
+Day
+
+Month
+
+Explain dataset logic.
+
+9. Machine Learning Models
+Explain each model in detail:
+
+Decision Tree
+How it works
+
+Advantages
+
+Disadvantages
+
+Use case in project
+
+Gradient Boosting
+Sequential learning
+
+Weak learner improvement
+
+Ensemble model
+
+KNN
+Nearest neighbour logic
+
+Distance calculation
+
+Classification
+
+Random Forest
+Multiple trees
+
+Voting mechanism
+
+Best performance
+
+10. Model Training Process
+Explain:
+
+Data preprocessing
+
+Feature scaling
+
+Train‑test split
+
+Model training
+
+Accuracy calculation
+
+11. Model Accuracy Comparison
+Generate table:
+
+Model	Current Accuracy	Forecast Accuracy
+Decision Tree
+Gradient Boosting
+KNN
+Random Forest
+
+Highlight:
+
+Random Forest Best Model
+12. Forecast Model
+Explain:
+
+2‑hour forecast
+
+Time shift dataset
+
+Time‑series prediction
+
+13. Backend Explanation
+Explain:
+
+app.py
+
+Functions:
+
+load_models()
+
+update_values()
+
+prediction logic
+
+sensor validation
+
+14. API Endpoints
+Explain:
+
+/data
+/start_monitoring
+/stop_monitoring
+/model_info
+/prediction
+Explain each endpoint.
+
+15. Dashboard Features
+Explain:
+
+Real‑time data
+
+Model comparison
+
+Graphs
+
+Prediction cards
+
+16. Graphs
+Add:
+
+Accuracy graph
+
+Radar chart
+
+Pie chart
+
+Prediction stability graph
+
+17. Model Comparison Section
+Explain:
+
+Accuracy
+
+Stability
+
+Speed
+
+Reliability
+
+18. Best Model Selection
+Explain:
+
+Random Forest selected because:
+
+Highest accuracy
+
+Stable prediction
+
+Noise handling
+
+19. Sensor Data Processing
+Explain:
+
+Moving average
+
+Noise reduction
+
+Data validation
+
+20. File Structure
+Explain:
+
+app.py
+train_model.py
+train_forecast.py
+generate_dataset.py
+templates/
+static/
+models/
+Explain role of each file.
+
+21. Project Features
+List:
+
+Real‑time monitoring
+
+Multi‑model comparison
+
+Forecast prediction
+
+IoT integration
+
+22. Advantages
+List:
+
+Accurate prediction
+
+Real‑time monitoring
+
+Multi‑model comparison
+
+23. Limitations
+List:
+
+Sensor dependency
+
+Local dataset
+
+24. Future Scope
+Add:
+
+Cloud integration
+
+Mobile app
+
+Deep learning
+
+25. Conclusion
+Write academic conclusion.
+
+26. Generate Visuals
+Generate:
+
+Architecture diagram
+
+Model comparison chart
+
+Workflow diagram
+
+Dataset chart
+
+27. Output Format
+Generate:
+
+Academic report
+
+Documentation
+
+Analysis page
+
+Graphs
+
+DO NOT MODIFY CODE
+Only:
+
+Analyze
+
+Document
+
+Generate graphs

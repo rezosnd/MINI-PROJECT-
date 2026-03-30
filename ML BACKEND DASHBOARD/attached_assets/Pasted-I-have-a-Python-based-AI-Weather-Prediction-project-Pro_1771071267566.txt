@@ -1,0 +1,184 @@
+I have a Python-based AI Weather Prediction project.
+
+Project files:
+- weather_model.pkl
+- label_encoder.pkl
+- live_predict.py
+- train_model.py
+- predict_weather.py
+
+I want you to build a PREMIUM, highly interactive Flask IoT Dashboard.
+
+====================================================
+OVERALL DESIGN STYLE
+====================================================
+
+- Dark theme (deep navy / charcoal background)
+- Glassmorphism cards (blur + soft glow)
+- Smooth animations
+- Modern fonts (Google Fonts like Poppins or Inter)
+- Animated gradients
+- Professional IoT monitoring look
+
+Make it look like a real-time AI weather monitoring system used in a control room.
+
+====================================================
+NAVIGATION STRUCTURE
+====================================================
+
+Sidebar layout (collapsible animated sidebar):
+
+Dashboard
+Temperature & Humidity
+Precipitation
+UV Index
+Predicted Weather
+
+Top navbar:
+- Live Status Indicator (green dot when connected)
+- Last Updated Timestamp
+- AI Model Status Badge
+
+====================================================
+MAIN DASHBOARD (Summary View)
+====================================================
+
+This page shows all data together.
+
+Top Section:
+- Large Animated Weather Icon (changes based on prediction)
+- Big Prediction Text
+- Color-coded glowing badge
+
+Below:
+4 Glass Cards in grid:
+
+1) Temperature
+   - Large numeric value
+   - Sparkline mini graph
+   - Animated thermometer bar
+
+2) Humidity
+   - Circular animated gauge (Chart.js radial)
+   - Mini line graph
+
+3) Precipitation
+   - Animated rain progress bar
+   - Bar chart history
+
+4) UV Index
+   - UV Risk Color Glow Card
+   - Dynamic color background based on risk level
+
+Add subtle animation when values change.
+
+====================================================
+TEMPERATURE & HUMIDITY PAGE
+====================================================
+
+- Dual axis interactive chart
+- Hover tooltips
+- Toggle button to switch between:
+   - Line Graph
+   - Area Graph
+- Animated progress visuals
+- Trend indicator arrows (↑ or ↓)
+
+====================================================
+PRECIPITATION PAGE
+====================================================
+
+- Animated rainfall visualization (CSS falling drops)
+- Bar chart with gradient colors
+- Rain intensity meter
+- Rain probability gauge
+
+====================================================
+UV INDEX PAGE
+====================================================
+
+- Circular UV risk meter
+- Background color changes dynamically
+- Health advisory text based on UV level
+- Line chart history
+
+====================================================
+PREDICTED WEATHER PAGE
+====================================================
+
+- Large animated weather illustration
+- Prediction confidence bar
+- Probability breakdown pie chart
+- AI status message like:
+   "Model Confidence: High"
+
+====================================================
+BACKEND REQUIREMENTS (Flask - app.py)
+====================================================
+
+- Load weather_model.pkl
+- Load label_encoder.pkl
+- Read Arduino serial COM7 at 9600 baud
+- Convert to DataFrame:
+    ["Temperature", "Humidity", "Precipitation (%)", "UV Index"]
+- Predict weather
+- Maintain rolling history (last 20 readings)
+- Provide JSON endpoint /data
+- Handle serial failure gracefully
+- Include connection status flag
+
+====================================================
+REAL-TIME BEHAVIOR
+====================================================
+
+- Use fetch() every 2 seconds
+- Update charts without reloading
+- Do NOT recreate charts on every update
+- Smooth transitions
+- Add subtle number animation when values change
+
+====================================================
+EXTRA INTERACTIVE FEATURES
+====================================================
+
+- Toggle Dark/Light Mode
+- Sidebar collapse animation
+- Animated loading spinner while waiting for data
+- Glow effect on prediction badge
+- Responsive design for mobile
+
+====================================================
+TECH STACK
+====================================================
+
+- Flask
+- Bootstrap 5
+- Chart.js
+- FontAwesome icons
+- CSS animations
+- Modern UI principles
+
+====================================================
+PROJECT STRUCTURE
+====================================================
+
+weather_ai_project/
+│
+├── app.py
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── temp_humidity.html
+│   ├── precipitation.html
+│   ├── uv_index.html
+│   ├── prediction.html
+├── static/
+│   ├── css/
+│   ├── js/
+│   ├── animations.css
+
+====================================================
+
+Generate complete runnable Flask project.
+Code must be clean, modular, production-ready.
+Make it visually impressive and interactive.

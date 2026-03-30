@@ -1,0 +1,197 @@
+I want you to analyze my entire project and create a complete academic‑style project documentation covering everything implemented.
+
+Project Title
+Intelligent Microclimate Monitoring and Prediction System Using IoT and Machine Learning
+
+Machine Learning Models Used (UPDATED)
+Replace Logistic Regression with Gradient Boosting
+
+Models Used:
+
+Decision Tree
+
+Gradient Boosting
+
+KNN
+
+Random Forest (Best Model)
+
+Update All Sections Accordingly
+Wherever Logistic Regression exists, replace with Gradient Boosting
+
+Section — Machine Learning Models
+Decision Tree
+Simple tree‑based model
+
+Easy to interpret
+
+Baseline comparison
+
+Gradient Boosting
+Ensemble learning technique
+
+Sequential tree learning
+
+Improves weak learners
+
+Better performance than simple models
+
+KNN
+Pattern‑based model
+
+Uses nearest neighbours
+
+Good classification accuracy
+
+Random Forest (Best Model)
+Multiple decision trees
+
+High accuracy
+
+Reduces overfitting
+
+Best forecasting performance
+
+Model Accuracy Comparison Table
+Model	Current Accuracy	Forecast Accuracy
+Decision Tree		
+Gradient Boosting		
+KNN		
+Random Forest		
+Highlight:
+
+Random Forest → Best Model
+Model Analysis Graphs
+Create:
+
+1. Accuracy Comparison Bar Chart
+Compare:
+
+Decision Tree
+
+Gradient Boosting
+
+KNN
+
+Random Forest
+
+2. Radar Chart
+Compare:
+
+Accuracy
+
+Forecast Accuracy
+
+Stability
+
+Speed
+
+Reliability
+
+3. Pie Chart
+Show:
+
+Best Model Distribution
+
+Model Strength Comparison
+Decision Tree
+
+Simple
+
+Easy to explain
+
+Gradient Boosting
+
+Sequential learning
+
+High performance
+
+KNN
+
+Pattern based
+
+Good classification
+
+Random Forest
+
+Multiple trees
+
+Best accuracy
+
+Ranking Section
+Display:
+
+Model Ranking
+
+1. Random Forest
+2. Gradient Boosting
+3. Decision Tree
+4. KNN
+Dataset Section
+Features:
+
+Temperature
+
+Humidity
+
+Precipitation
+
+UV Index
+
+Pressure
+
+Hour
+
+Day
+
+Month
+
+System Architecture
+Sensors → Arduino → Flask → ML Models → Dashboard
+
+Dashboard Features
+Real‑time prediction
+
+Model comparison
+
+Graphs
+
+Forecast
+
+Final Conclusion
+Four machine learning models were evaluated:
+
+Decision Tree
+
+Gradient Boosting
+
+KNN
+
+Random Forest
+
+Random Forest achieved best performance and selected as final model.
+
+UI Requirements
+Make:
+
+Academic layout
+
+Graphs
+
+Tables
+
+Attractive analysis section
+
+DO NOT MODIFY
+Backend logic
+
+Arduino code
+
+ONLY ADD
+Documentation section
+
+Model analysis page
+
+Graphs
+
+Comparison tables

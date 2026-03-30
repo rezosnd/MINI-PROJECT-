@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .rain-drop {
+        position: absolute;
+        width: 1px; height: 18px;
+        background: linear-gradient(to bottom, transparent, #00f2ff);
+        top: -20px;
+        animation: fall linear infinite;
+    }
+    @keyframes fall { to { transform: translateY(600px); } }
+
+    .precip-hero {
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(0,242,255,0.15);
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+    }
+    .p-meter-badge {
+        font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+        font-weight: 700;
+        padding: 0.6rem 1.5rem;
+        border-radius: 9999px;
+        display: inline-block;
+        border: 1px solid rgba(0,242,255,0.25);
+        background: rgba(0,242,255,0.1);
+        color: #00f2ff;
+    }
+    .precip-value {
+        font-size: clamp(3rem, 12vw, 6rem);
+        font-weight: 900;
+        line-height: 1;
+    }
+</style>
+
+<div class="container-fluid px-0" style="max-width:1100px; margin:0 auto;">
+    <div class="row g-3">
+
+        <!-- Left: probability display -->
+        <div class="col-12 col-md-5">
+            <div class="precip-hero p-4 text-center h-100 d-flex flex-column justify-content-center" style="min-height:260px;">
+                <div id="rain-bg" class="position-absolute top-0 start-0 w-100 h-100" style="z-index:0; opacity:0.15;"></div>
+                <div style="position:relative; z-index:1;">
+                    <h6 class="text-info fw-bold mb-3" style="letter-spacing:3px; font-size:0.72rem;">RAINFALL PROBABILITY</h6>
+                    <div class="precip-value text-white mb-3">
+                        <span id="p-val">--</span><span class="h3 ms-1 text-secondary">%</span>
+                    </div>
+                    <div id="p-meter" class="p-meter-badge mb-3">DRY</div>
+                    <p class="text-info small fw-bold opacity-75 mb-0" style="font-size:0.68rem; letter-spacing:1px;">SENSOR ARRAY ANALYSIS ACTIVE</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: history chart -->
+        <div class="col-12 col-md-7">
+            <div class="glass-card p-3 p-md-4 h-100">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                    <h6 class="text-info fw-bold m-0" style="letter-spacing:1px; font-size:0.72rem;">PRECIPITATION INTENSITY HISTORY</h6>
+                    <span class="badge rounded-pill bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-1" style="font-size:0.65rem;">LIVE STREAM</span>
+                </div>
+                <div style="height:min(350px, 50vw);">
+                    <canvas id="pHistory"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let pChart;
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('pHistory').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+        gradient.addColorStop(0, 'rgba(0,242,255,0.4)');
+        gradient.addColorStop(1, 'rgba(0,242,255,0.05)');
+
+        pChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [], backgroundColor: gradient,
+                    borderColor: '#00f2ff', borderWidth: 1,
+                    borderRadius: 5, barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 0 } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        const bg = document.getElementById('rain-bg');
+        for (let i = 0; i < 40; i++) {
+            let drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            drop.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's';
+            bg.appendChild(drop);
+        }
+    });
+
+    window.onUpdate = function(d) {
+        if (!d.current.monitoring.active) return;
+        document.getElementById('p-val').innerText = Math.round(d.current.precipitation);
+        let m = 'DRY', color = 'rgba(0,242,255,0.1)';
+        if (d.current.precipitation > 60)      { m = 'HEAVY RAIN'; color = 'rgba(239,68,68,0.2)'; }
+        else if (d.current.precipitation > 20) { m = 'MODERATE';   color = 'rgba(59,130,246,0.2)'; }
+        const meter = document.getElementById('p-meter');
+        meter.innerText = m;
+        meter.style.background = color;
+        if (d.history.length > 0) {
+            pChart.data.labels = d.history.map(x => x.timestamp);
+            pChart.data.datasets[0].data = d.history.map(x => x.precipitation);
+            pChart.update('none');
+        }
+    };
+</script>
+{% endblock %}

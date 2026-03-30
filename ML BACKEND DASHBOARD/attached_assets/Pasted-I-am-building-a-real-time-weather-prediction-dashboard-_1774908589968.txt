@@ -1,0 +1,95 @@
+I am building a real-time weather prediction dashboard using multiple ML models:
+
+Models:
+
+* Decision Tree
+* Gradient Boosting
+* KNN
+* Random Forest
+
+Problem:
+The models are producing logically inconsistent predictions. For example:
+
+* Sunny prediction when UV index is 0
+* Rainy prediction when precipitation is 0
+* Different models predicting conflicting weather under identical inputs
+* High accuracy but unrealistic real-world predictions
+
+Current Input Features:
+
+* Temperature
+* Humidity
+* Pressure
+* UV Index
+* Precipitation (%)
+* Month
+* Hour of Day
+* Day of Week
+
+What I Want:
+
+Please analyze the entire prediction pipeline and automatically improve prediction consistency using proper ML engineering practices instead of hard-coded weather rules.
+
+Tasks:
+
+1. Review Data Pipeline
+
+* Check feature preprocessing
+* Verify normalization/scaling
+* Check missing values
+* Validate sensor input ranges
+* Detect noisy or unreliable features
+
+2. Analyze Model Behavior
+
+* Compare predictions across models
+* Identify why models disagree
+* Detect overfitting or bias
+* Evaluate probability outputs instead of hard labels
+
+3. Improve Prediction Reliability
+
+* Use probability-based prediction
+* Implement ensemble aggregation (soft voting / weighted voting)
+* Improve feature engineering if necessary
+* Balance dataset if class imbalance exists
+
+4. Validate Feature Importance
+
+* Check if models rely too heavily on single features
+* Recalculate feature importance
+* Remove weak or misleading features if needed
+
+5. Improve Real-time Prediction Pipeline
+   Sensor Data
+   → Preprocessing
+   → Model Predictions
+   → Ensemble Aggregation
+   → Final Prediction
+
+6. Add Consistency Check (Data-Driven, Not Rule-Based)
+   Use model probabilities and statistical reasoning instead of manually defining weather rules.
+
+7. Improve Confidence Score
+   Provide:
+
+* Final prediction
+* Confidence level
+* Model agreement percentage
+
+8. Optimize for Live Arduino Data
+   Ensure:
+
+* Stable predictions
+* Smooth transitions
+* Reduced prediction flickering
+
+Goal:
+Make predictions:
+
+* Realistic
+* Consistent
+* Data-driven
+* Model-based (not manually rule-based)
+
+Please refactor the prediction logic and improve model consistency accordingly.

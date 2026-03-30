@@ -1,0 +1,155 @@
+I am seeing several problems in my dashboard based on the current screenshots. Please analyze and fix them properly.
+
+Observed Problems From Dashboard:
+
+1. Sunny Prediction with UV = 0
+
+* Gradient Boosting predicts **Sunny**
+* KNN predicts **Sunny**
+* But **UV Radiation = 0**
+* This is logically inconsistent and unrealistic
+
+2. Rainy Forecast with Rainfall = 0
+
+* 2-Hour Forecast shows **Rainy**
+* But **Rainfall = 0%**
+* **Precipitation = 0%**
+* This makes the Rainy prediction questionable
+
+3. Models Giving Contradicting Predictions for Same Input
+
+Same sensor values:
+
+* Decision Tree → Cloudy
+* Random Forest → Cloudy
+* Gradient Boosting → Sunny
+* KNN → Sunny
+
+This indicates:
+
+* Model disagreement
+* Poor feature interpretation
+* Possible preprocessing inconsistency
+
+4. High Accuracy But Wrong Real-World Logic
+
+Example:
+
+* Gradient Boosting accuracy = 99.7%
+* But prediction = Sunny
+* While other models = Cloudy
+* Real weather = Cloudy
+
+High accuracy but incorrect real-time prediction.
+
+5. Confidence Very Low
+
+Model Certainty = **54.1%**
+
+This indicates:
+
+* Models unsure
+* Weak prediction stability
+* Poor ensemble logic
+
+6. Best Model Changing Inconsistently
+
+Sometimes:
+
+* Random Forest marked BEST
+
+Later:
+
+* Gradient Boosting marked BEST
+
+Even when predictions contradict each other.
+
+Best model selection logic seems inconsistent.
+
+7. Feature Importance Seems Imbalanced
+
+Current Feature Importance:
+
+* Temperature: 24.1%
+* Precipitation: 18.1%
+* Pressure: 18.1%
+* Humidity: 16.4%
+* UV Index: 14.7%
+* Month: 4.4%
+* Hour: 3.9%
+* Day of Week: 0.4%
+
+Possible Issues:
+
+* Time-based features may be weak
+* Some features may be noisy
+* Models may be over-relying on temperature
+
+8. Live Model Score Inconsistency
+
+Example:
+
+* Decision Tree = 192 pts
+* Random Forest = 192 pts
+* Gradient Boosting = 17 pts
+* KNN = 0 pts
+
+But:
+
+* Gradient Boosting accuracy highest (99.7%)
+
+Scoring logic inconsistent with accuracy.
+
+9. Forecast vs Current Prediction Conflict
+
+Example:
+Current:
+
+* Cloudy
+
+Forecast:
+
+* Rainy
+
+But:
+
+* No rainfall
+* No precipitation
+* No pressure drop visible
+
+Forecast logic may be weak.
+
+10. Real Weather API Match Inconsistent
+
+Example:
+
+* Some models marked Match ✔
+* Some marked No ❌
+
+Even though predictions very similar.
+
+Match logic may be incorrect.
+
+What I Want You To Do
+
+Please:
+
+* Analyze entire prediction pipeline
+* Fix preprocessing
+* Fix model disagreement
+* Improve ensemble logic
+* Improve scoring logic
+* Improve confidence calculation
+* Improve best model selection
+* Improve forecast logic
+
+You can:
+
+* Retrain models
+* Rebuild pipeline
+* Redesign scoring
+* Improve ensemble
+* Rebalance features
+
+Take your time and do whatever necessary to fix the model properly.
+Accuracy, consistency, and realistic predictions are the priority.
