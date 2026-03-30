@@ -89,7 +89,7 @@ Avoid committing secrets and never hardcode API keys.
 
 ## Contributors
 
-Contributed by: **REHAN SUMAN**, **MEHUL PATWARI**, **AYUSH PATWARI**
+Contributed by: **REHAN SUMAN**
 
 Thank you for your energy, design sense, and attention to detail.
 

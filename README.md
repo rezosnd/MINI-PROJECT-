@@ -1,4 +1,4 @@
-# Alpha Earth: Intelligent Emergency and Weather Intelligence Platform
+# 🌍 DARK ROUTE - IoT Weather Monitoring & Risk Prediction System
 
 ![Expo](https://img.shields.io/badge/Expo-SDK%2054-black)
 ![React Native](https://img.shields.io/badge/React%20Native-0.81-20232A)
@@ -6,13 +6,16 @@
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB)
 ![Flask](https://img.shields.io/badge/Flask-ML%20Dashboard-000000)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web%20%7C%20IoT-0A66C2)
+![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen)
 
-A full-stack safety platform that combines:
-- A mobile-first Expo app for emergency workflows, scanning, alerts, and operational modules
-- A Node.js bot backend that forwards user media/text to Telegram responders
-- A Python + Flask + ML weather intelligence backend connected to Arduino IoT sensors
+**Advanced environmental monitoring and predictive analytics platform with AI-powered risk assessment**
 
-This repository is organized as a multi-project workspace with three major systems working together.
+A comprehensive full-stack platform combining:
+- 📱 **Mobile-First Expo App** - Emergency workflows, scanning, alerts, and operational modules
+- 🤖 **Node.js Bot Backend** - Real-time incident forwarding and responder coordination
+- 🧠 **Python + Flask + ML Engine** - Weather intelligence, IoT sensor integration, and predictive analytics
+
+This repository is organized as a scalable multi-project workspace with three major systems working seamlessly together.
 
 ## Table of Contents
 
@@ -326,5 +329,6 @@ If you plan distribution, add a single authoritative LICENSE file at repository 
 If you want, I can next generate:
 1) A polished .env.example pack for all three modules
 2) A docker-compose setup to run BACKEND-BOT + ML BACKEND together
-3) A concise contributor/developer onboarding guide#   M I N I - P R O J E C T -  
+3) A concise contributor/developer onboarding guide#   M I N I - P R O J E C T - 
+ 
  
